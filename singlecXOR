@@ -1,30 +1,6 @@
 package cryptopals
 
-import (
-	"encoding/base64"
-	"encoding/hex"
-	"log"
-)
 
-func hextoBase64(s string) (string, error) {
-	val, err := hex.DecodeString(s)
-	if err != nil {
-		return "", err
-	}
-	log.Printf("%s", val)
-	return base64.StdEncoding.EncodeToString(val), nil
-}
-
-func xor(a, b []byte) []byte {
-	if len(a) != len(b) {
-		panic("xor mismatch length")
-	}
-	res := make([]byte, len(a))
-	for i := range a {
-		res[i] = a[i] ^ b[i]
-	}
-	return res
-}
 
 func EnglishScore(b []byte) float64{
     expected freqs :=map[rune] float64 {
@@ -94,18 +70,3 @@ func singleXOR(in []byte, key byte) []byte {
 	return res
 }
 
-func FindSingleCharForXor(b []byte) byte {
-	bestScore := float64(-1)
-	var bestChar byte
-
-	for ch := 0; ch <= 255; ch++ {
-		Xored, _ := SingleXor(byte(ch), b)
-		currentScore := EnglishScore(Xored)
-		if currentScore < bestScore || bestScore < 0 {
-			bestScore = currentScore
-			bestChar = byte(ch)
-		}
-	}
-
-	return byte(bestChar)
-}
