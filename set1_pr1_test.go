@@ -3,6 +3,8 @@ package cryptopals
 import (
 	"bytes"
 	"encoding/hex"
+	"fmt"
+	"io/ioutil"
 	"testing"
 )
 
@@ -31,4 +33,19 @@ func decodeHex(t *testing.T, s string) []byte {
 		t.Fatal("failed to decode hex", s)
 	}
 	return v
+}
+
+func corpusfromFile(name string) map[rune]float64 {
+	text, err := ioutil.ReadFile(name)
+	if err != nil {
+		panic(fmt.Sprintln("failed to read the corpus file", err))
+	}
+	return buildCorpus(string(text))
+}
+
+var corpus = corpusfromFile("E:/cryptopals/testdata/alice_in_wonderland.txt")
+
+func TestProblem3(t *testing.T) {
+	res, _, _ := findsingleXOR(decodeHex(t, "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"), corpus)
+	t.Logf("%s", res)
 }
